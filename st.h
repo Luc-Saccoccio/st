@@ -95,6 +95,7 @@ void kscrolldown(const Arg *);
 void kscrollup(const Arg *);
 void externalpipe(const Arg *);
 void iso14755(const Arg *);
+void newterm(const Arg *);
 void printscreen(const Arg *);
 void printsel(const Arg *);
 void sendbreak(const Arg *);
