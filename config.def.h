@@ -20,8 +20,6 @@ static int borderpx = 2;
  */
 static char *shell = "/bin/sh";
 char *utmp = NULL;
-/* scroll program: to enable use a string like "scroll" */
-char *scroll = NULL;
 char *stty_args = "stty raw pass8 nl -echo -iexten -cstopb 38400";
 
 /* identification sequence returned in DA and DECID */
@@ -108,7 +106,7 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 1;
+float alpha = 0.95;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
@@ -139,7 +137,7 @@ static const char *colorname[] = {
  */
 unsigned int defaultfg = 7;
 unsigned int defaultbg = 0;
-static unsigned int defaultcs = 13;
+unsigned int defaultcs = 13;
 static unsigned int defaultrcs = 0;
 
 /*
@@ -219,23 +217,27 @@ ResourcePref resources[] = {
 		{ "chscale",      FLOAT,   &chscale },
 };
 
-
+/*
+ * Internal mouse shortcuts.
+ * Beware that overloading Button1 will disable the selection.
+ */
+const unsigned int mousescrollincrement = 3;
+static MouseShortcut mshortcuts[] = {
+  /* button               mask            string */
+  { Button4,              XK_NO_MOD,      "\031" },
+  { Button5,              XK_NO_MOD,      "\005" },
+};
 
 /* Internal keyboard shortcuts. */
 #define MODKEY Mod1Mask
 #define TERMMOD (Mod1Mask|ShiftMask)
 
-/*
- * Internal mouse shortcuts.
- * Beware that overloading Button1 will disable the selection.
- */
-
-static MouseShortcut mshortcuts[] = {
-	/* mask                 button   function        argument      release alt */
-	{ XK_NO_MOD,            Button4, kscrollup,        {.i =  1} },
-	{ XK_NO_MOD,		Button5, kscrolldown,	   {.i =  1} },
-	{ TERMMOD,		Button4, zoom,		   {.f = +1} },
-	{ TERMMOD, 		Button5, zoom,		   {.f = -1} },
+MouseKey mkeys[] = {
+  /* button               mask            function        argument */
+  { Button4,              XK_NO_MOD,      kscrollup,      {.i =  mousescrollincrement} },
+  { Button5,              XK_NO_MOD,      kscrolldown,    {.i =  mousescrollincrement} },
+  { Button4,              Mod4Mask,        zoom,           {.f =  +1} },
+  { Button5,              Mod4Mask,        zoom,           {.f =  -1} },
 };
 
 static char *openurlcmd[] = { "/bin/sh", "-c", "st-urlhandler", "externalpipe", NULL };

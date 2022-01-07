@@ -9,10 +9,11 @@ Maybe not all of them are listed here, but here are the main ones:
 - boxdraw
 - clipboard
 - copyurl
-- externalpipe (with Luke Smith scripts)
+- externalpipe
 - font2
 - iso14755
 - ligatures
+- patch_column
 - scrollback
 - vertcenter
 - w3m
